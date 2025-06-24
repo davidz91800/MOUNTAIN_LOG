@@ -1,0 +1,107 @@
+/* --- STYLES GÉNÉRAUX --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 10px; /* Réduit pour les petits écrans */
+}
+.container {
+    background-color: #ffffff;
+    padding: 20px; /* Réduit */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 950px;
+    width: 100%;
+    margin: 10px auto;
+    border-top: 5px solid #007bff;
+    box-sizing: border-box;
+}
+h1 { color: #0056b3; text-align: center; font-size: 1.8em; }
+h2 { font-size: 1.4em; margin-top: 25px; }
+h3 { font-size: 1.1em; margin-bottom: 15px; }
+p { color: #555; text-align: center; margin-bottom: 25px; }
+.upload-section { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+.file-upload-wrapper { position: relative; display: inline-block; cursor: pointer; }
+.file-upload-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.btn { background-color: #007bff; color: white; padding: 12px 20px; border-radius: 5px; font-size: 16px; font-weight: bold; border: none; cursor: pointer; transition: background-color 0.3s ease; display: inline-block; margin: 5px; }
+.btn:hover { background-color: #0056b3; }
+.btn-success { background-color: #28a745; }
+.btn-success:hover { background-color: #218838; }
+.btn-secondary { background-color: #6c757d; }
+.btn-secondary:hover { background-color: #5a6268; }
+.btn-info { background-color: #17a2b8; }
+.btn-info:hover { background-color: #138496; }
+.btn-print { background-color: #4a4a4a; }
+.btn-print:hover { background-color: #333333; }
+#status { text-align: center; margin-top: 20px; font-style: italic; color: #666; min-height: 24px; }
+#log-container { margin-top: 20px; }
+
+/* --- STYLES TABLEAU & ÉDITION --- */
+.table-wrapper { overflow-x: auto; } /* Permet le scroll horizontal sur petits écrans */
+#log-table { width: 100%; border-collapse: collapse; margin-top: 15px; table-layout: fixed; }
+#log-table th, #log-table td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; vertical-align: top; word-wrap: break-word; }
+#log-table thead { background-color: #e9ecef; font-weight: bold; }
+.col-num { width: 5%; } .col-wp { width: 15%; } .col-coords { width: 30%; } .col-alt { width: 15%; } .col-comment { width: 35%; }
+#log-table .editable-cell input { width: calc(100% - 14px); padding: 4px; border: 1px solid #ccc; border-radius: 4px; }
+.edit-btn { background: #6c757d; color: white; border: none; border-radius: 4px; padding: 4px 8px; font-size: 12px; cursor: pointer; float: right; margin-left: 5px; }
+.edit-btn.save { background: #28a745; }
+#log-table input[type="number"] { width: 90px; padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+.comment-textarea { width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; padding: 6px; font-family: inherit; font-size: 14px; resize: none; overflow-y: hidden; min-height: 30px; }
+.input-error { border: 2px solid #dc3545 !important; }
+
+/* --- STYLES INSERTION LIGNE --- */
+.insert-row td { padding: 8px; background-color: #f8f9fa; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; }
+.insert-cell-content { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; width: 100%; font-size: 13px; color: #555; gap: 10px; }
+.add-wp-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.distance-input { width: 60px !important; font-size: 13px !important; padding: 4px !important; text-align: right; }
+.add-wp-btn { background-color: #007bff; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; transition: all 0.2s ease; white-space: nowrap; }
+.add-wp-btn:hover { background-color: #0056b3; }
+.warning-banner { background-color: #fffbe6; border: 1px solid #ffe58f; color: #8a6d3b; padding: 10px 15px; border-radius: 5px; margin: 15px 0; text-align: center; }
+.action-bar { text-align: center; margin-top: 25px; }
+#download-container { margin-top: 20px; text-align: center; }
+.download-link { display: inline-block; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; color: white; transition: background-color 0.3s ease; margin: 5px; }
+
+/* --- STYLES IMPRESSION --- */
+#print-header { display: none; }
+@media print {
+    body { background-color: #fff; font-size: 10pt; padding: 0; margin: 20px; }
+    body > .container > *:not(#log-container) { display: none; }
+    #log-container .action-bar, .warning-banner, #download-container, .table-wrapper { display: none; }
+    #print-header { display: block; text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+    #print-header h1 { font-size: 16pt; margin: 0; }
+    #print-header p { font-size: 10pt; margin: 5px 0 0; }
+    .container { box-shadow: none; border-top: none; padding: 0; max-width: 100%; }
+    #log-table { table-layout: auto; width: 100%; }
+    #log-table th, #log-table td { padding: 6px; vertical-align: middle; }
+    #log-table thead { display: table-header-group; }
+    .edit-btn, .insert-row { display: none !important; }
+    .altitude-input, .comment-textarea { -webkit-appearance: none; -moz-appearance: none; appearance: none; border: none; background-color: transparent; padding: 0; margin: 0; width: 100%; font-family: inherit; font-size: inherit; color: inherit; resize: none; box-shadow: none; overflow: visible; height: auto; white-space: pre-wrap; }
+    .altitude-input { text-align: left; }
+    .editable-cell .input-value { display: none; }
+    .editable-cell .display-value { display: inline !important; }
+}
+
+/* --- MEDIA QUERIES POUR MOBILE & TABLETTE --- */
+@media (max-width: 768px) {
+    body { padding: 5px; }
+    .container { padding: 15px; }
+    h1 { font-size: 1.6em; }
+    .btn { padding: 10px 15px; font-size: 15px; }
+    #log-table th, #log-table td { padding: 6px 8px; }
+    .insert-cell-content { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 1.4em; }
+    .action-bar .btn { width: calc(50% - 10px); margin: 5px; } /* 2 boutons par ligne */
+    #log-table { font-size: 13px; }
+    #log-table th, #log-table td { padding: 5px; }
+    .col-num { width: 10%; } .col-wp { width: 25%; } .col-coords { width: 65%; } 
+    .col-alt, .col-comment { display: none; } /* On cache les colonnes moins critiques sur très petits écrans */
+    #log-table th.col-alt, #log-table td:has(.altitude-input),
+    #log-table th.col-comment, #log-table td:has(.comment-textarea) {
+        display: none; /* Cache altitude et commentaires sur petits écrans */
+    }
+}

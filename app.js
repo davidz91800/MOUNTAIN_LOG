@@ -11,6 +11,15 @@ if ('serviceWorker' in navigator) {
             console.log('ServiceWorker registration failed: ', err);
         });
     });
+
+    // Écouteur pour les messages venant du Service Worker
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data && event.data.type === 'FILE_SHARE') {
+            console.log('Fichier reçu via le partage :', event.data.file);
+            // On utilise notre nouvelle fonction pour traiter le fichier
+            processFile(event.data.file);
+        }
+    });
 }
 
 // --- EVENT LISTENERS ---

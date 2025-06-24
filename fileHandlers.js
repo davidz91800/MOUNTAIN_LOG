@@ -3,12 +3,18 @@
 
 function handleFileSelect(event) {
     const file = event.target.files[0];
+    if (file) {
+        processFile(file);
+    }
+}
+
+function processFile(file) {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = e => {
         try {
             newPointCounter = 1;
-            processFlightPlan(e.target.result);
+            processFlightPlan(e.target.result, file.name); // On passe aussi le nom du fichier
         } catch (error) {
             displayStatus(`Erreur de traitement : ${error.message}`, 'error');
         }
@@ -16,7 +22,7 @@ function handleFileSelect(event) {
     reader.readAsText(file);
 }
 
-function processFlightPlan(xmlString) {
+function processFlightPlan(xmlString, fileName = "Trace de vol") {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, "application/xml");
     if (xmlDoc.getElementsByTagName("parsererror").length) {
@@ -47,8 +53,10 @@ function processFlightPlan(xmlString) {
     if (orderedWaypoints.length < 2) {
         throw new Error("Une route doit contenir au moins 2 points.");
     }
-
-    flightData.routeName = xmlDoc.getElementsByTagName('route-name')[0]?.textContent || "Trace de vol";
+    
+    // Essaye d'extraire le nom de la route du XML, sinon utilise le nom du fichier
+    const routeNameFromXml = xmlDoc.getElementsByTagName('route-name')[0]?.textContent;
+    flightData.routeName = routeNameFromXml || fileName.replace(/\.[^/.]+$/, ""); // Enlève l'extension
     flightData.waypoints = orderedWaypoints;
 
     populateLogTable();

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fpl-editor-v1';
+const CACHE_NAME = 'fpl-editor-v2'; // J'incrémente la version pour forcer la mise à jour
 const urlsToCache = [
   '/',
   'index.html',
@@ -24,19 +24,33 @@ self.addEventListener('install', event => {
 
 // Interception des requêtes
 self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // Gérer la requête de partage de fichier
+  if (event.request.method === 'POST' && url.pathname === '/index.html') {
+    event.respondWith(Response.redirect('/index.html')); // Répond immédiatement pour ouvrir l'app
+    event.waitUntil(async function () {
+      const formData = await event.request.formData();
+      const file = formData.get('fplfile'); // On utilise le nom défini dans le manifest
+      if (!file) return;
+
+      const client = await self.clients.get(event.resultingClientId || event.clientId);
+      if (client) {
+        client.postMessage({ file: file, type: 'FILE_SHARE' });
+      }
+    }());
+    return;
+  }
+  
+  // Stratégie de cache habituelle pour les requêtes GET
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        // Sinon, on va chercher sur le réseau
-        return fetch(event.request);
-      }
-    )
+        return response || fetch(event.request);
+      })
   );
 });
+
 
 // Nettoyage des anciens caches
 self.addEventListener('activate', event => {
